@@ -84,6 +84,7 @@ class ModelTraining:
 
                 result_old_model = self.old_model.predict(self.X_test)
                 accuracy_old_model = self.accuracyCheck(result_old_model)
+                print(accuracy_old_model)
 
         # Creating new model to compare accuracy with previous one
         self.model.fit(self.X_train, self.y_train)
