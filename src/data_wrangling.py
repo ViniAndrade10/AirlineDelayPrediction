@@ -1,5 +1,6 @@
 # type:ignore
 from pathlib import Path
+import pandas as pd
 from imblearn.over_sampling import SMOTE
 from input_data import InputData
 
@@ -41,6 +42,17 @@ class DataManipulation:
             mapping_airline
             )
 
+        # Making the Airline name and factor, a dataset to write an excel sheet
+        airline_range_sheet = pd.DataFrame(
+            airline_range, columns=["Airline", "Airline_Factor"]
+            )
+        with pd.ExcelWriter("dimension/Airline_Dimension.xlsx") as writer:
+            airline_range_sheet.to_excel(
+                excel_writer=writer,
+                sheet_name="Airline_Output",
+                index=False
+            )
+
     def changeAirport(self):
         airport_range = range(0, len(self.input_data.airports))
         mapping_airport = dict(
@@ -51,6 +63,17 @@ class DataManipulation:
         )
         self.dataframe["AirportTo"] = self.dataframe["AirportTo"].map(
             mapping_airport
+            )
+
+                # Making the Airline name and factor, a dataset to write an excel sheet
+        airport_range_sheet = pd.DataFrame(
+            airport_range, columns=["Airport", "Airport_Factor"]
+            )
+        with pd.ExcelWriter("dimension/Airport_Dimension.xlsx") as writer:
+            airport_range_sheet.to_excel(
+                excel_writer=writer,
+                sheet_name="Airport_Output",
+                index=False
             )
 
 
