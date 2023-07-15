@@ -62,7 +62,6 @@ class ModelTraining:
         accuracy = accuracy_score(self.y_test, y_pred=y_prediction)
         return accuracy
 
-
     def modelTraining(self):
         breakpoint()
         self.model = RandomForestClassifier(
@@ -117,7 +116,10 @@ class ModelTraining:
 if __name__ == "__main__":
     __ROOT_PATH__ = Path(__file__).resolve().parent.parent
     input_path = __ROOT_PATH__ / "data/airlines_delay.csv"
-    dataset_input = DataManipulation(input_path, "Class")
+    dimension_path = __ROOT_PATH__ / "src/dimension"
+    dataset_input = DataManipulation(
+        input_path, "Class", dimension_path
+        )
     data_preparation = DataPreparation(
         dataframe=dataset_input.dataframe, 
         target_var="Class", test_size=0.3
