@@ -45,7 +45,6 @@ class DataManipulation:
             )
 
         # Making the Airline name and factor, a dataset to write an excel sheet
-
         airline_range_sheet = pd.DataFrame(
             data=[[key, item ]for key, item in mapping_airline.items()], 
             columns=["Airline", "Airline_Factor"]
@@ -72,7 +71,7 @@ class DataManipulation:
             mapping_airport
             )
 
-                # Making the Airline name and factor, a dataset to write an excel sheet
+        # Making the Airline name and factor, a dataset to write an excel sheet
         airport_range_sheet = pd.DataFrame(
             data=[[key, item ]for key, item in mapping_airport.items()], 
             columns=["Airport", "Airport_Factor"]
