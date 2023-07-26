@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
+from io import BytesIO
 import os
 
 from model_prediction import Predicting
@@ -66,7 +67,10 @@ def run_model(model_path , output_path, dataset):
     prediction = Predicting(
         model_path, output_path, dataset
     )
-    return prediction.results
+    if output_path == "":
+        return prediction.manual_prediction
+    else:
+        return prediction.full_prediction
 
 
 if run_button_1:
@@ -87,7 +91,6 @@ if run_button_1:
 
 col_left, col_right =st.columns(spec=2, gap="small")
 col_left.text("Template Excel File Download:")
-col_right.download_button("Download Template", data="")
 
 st.title("___________________________________")
 
@@ -97,5 +100,49 @@ if uploaded_file != None:
     if not str(uploaded_file.name).endswith(".xlsx"):
         st.warning("File must be an Excel Sheet.", icon="⚠️")
     else:
-        # run_button_2 = st.button("Run Model", key="number_2")
-        st.write("In Progress")
+        run_button_2 = st.button("Run Model", key="number_2")
+        
+        if run_button_2:
+            dataset_complete = pd.read_excel(uploaded_file)
+            predicted_data = run_model(model_path, "Excel_Sheet", dataset_complete)
+            st.table(predicted_data)
+
+            buffer = BytesIO()
+            with pd.ExcelWriter(buffer) as writer:
+                predicted_data.to_excel(  #type: ignore
+                    writer, sheet_name="Predictions", index=False
+                    )
+
+
+            st.download_button(
+                label="Download Prediction", 
+                data=buffer, 
+                file_name="Output_Airline_Delay_Prediction.xlsx"
+                )
+
+# Creating template download area
+cols = [
+    "Time", "Length", 
+    "Airline", "AirportFrom", 
+    "AirportTo", "DayOfWeek"
+    ]
+
+data_template = [
+    ["duration of flight in minutes",
+     "flight length", "responsable airline",
+     "airport of departure", "airport of arrival",
+     "flight day of the week"]
+    ]
+
+dataset_template = pd.DataFrame(data_template)
+dataset_template.columns = cols
+
+buffer_template = BytesIO()
+with pd.ExcelWriter(buffer_template) as writer:
+    dataset_template.to_excel(writer, sheet_name="Template", index=False) #type: ignore
+
+col_right.download_button(
+    label="Download Template", 
+    data=buffer_template, 
+    file_name="Template_Workbook.xlsx"
+    )
