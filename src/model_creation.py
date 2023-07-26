@@ -63,7 +63,6 @@ class ModelTraining:
         return accuracy
 
     def modelTraining(self):
-        breakpoint()
         self.model = RandomForestClassifier(
             n_estimators=self.n_estimators, 
             max_depth=self.max_depth

@@ -20,24 +20,28 @@ class Predicting:
         self.exporting_results(output_result_path)
 
     def making_prediction(self):
-        self.dataset.drop(["Flight"], axis=1, inplace=True)
-        model = pickle.load(open(self.model_path, "rb"))
-        self.model = model
-        self.results = self.model.predict(self.dataset)
+        if "Flight" in self.dataset.columns:
+            self.dataset.drop(["Flight"], axis=1, inplace=True)
+        else:
+            model = pickle.load(open(self.model_path, "rb"))
+            self.model = model
+            self.results = self.model.predict(self.dataset)
 
     def building_results(self):
         self.dataset["Prediction"] = self.results
 
     def exporting_results(self, output_path):
-        breakpoint()
         version_date = datetime.today().strftime("%Y%m%d%H%M")
         file = f"Output_Airline_Delay_{version_date}.xlsx"
-        with pd.ExcelWriter(output_path / file) as writer:
-            self.dataset.to_excel(
-                excel_writer=writer, 
-                sheet_name="Output_Airline_Delay",
-                index=False
-            )
+        if output_path == "":
+            return self.dataset["Prediction"]
+        else:
+            with pd.ExcelWriter(output_path / file) as writer:
+                self.dataset.to_excel(
+                    excel_writer=writer, 
+                    sheet_name="Output_Airline_Delay",
+                    index=False
+                )
 
     def creating_factors(self):
         airline_dimension = pd.read_excel(
