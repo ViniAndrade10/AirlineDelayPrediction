@@ -36,7 +36,7 @@ class Predicting:
         version_date = datetime.today().strftime("%Y%m%d%H%M")
         self.output_file_name = f"Output_Airline_Delay_{version_date}.xlsx"
         if output_way == "":
-            self.manual_prediction = self.dataset["Prediction"].values
+            self.manual_prediction = self.dataset["Prediction"][0]
         else:
             self.full_prediction = self.dataset
             print(self.full_prediction)

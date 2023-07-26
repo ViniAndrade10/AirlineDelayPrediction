@@ -81,9 +81,9 @@ if run_button_1:
     result = run_model(model_path, "", dataset_for_model)
     st.sidebar.write(result)
     if result == 1 or result == "1":
-        st.sidebar.write("The flight will be Delaied")
+        st.sidebar.write(f"{result} - The flight will be Delaied")
     else:
-        st.sidebar.write("The flight will be on Time")
+        st.sidebar.write(f"{result} - The flight will be on Time")
 
 # Here I'll create two columns
 # First Column contains an explanation of the template file
