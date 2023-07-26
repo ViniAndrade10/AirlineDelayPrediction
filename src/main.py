@@ -79,7 +79,6 @@ if run_button_1:
         )
 
     result = run_model(model_path, "", dataset_for_model)
-    st.sidebar.write(result)
     if result == 1 or result == "1":
         st.sidebar.write(f"{result} - The flight will be Delaied")
     else:
